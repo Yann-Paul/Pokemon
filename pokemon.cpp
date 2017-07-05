@@ -1,3 +1,10 @@
+/*
+ * PseudoPok.cpp
+ *
+ *  Created on: 05.07.2017
+ *      Author: jacobstupka
+ */
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,9 +20,7 @@ public:
 	int strength;
 	int precision;
 	int APcost;
-
 	Attack(string name, string typ, int strength, int precision, int APcost){};
-
 private:
 };*/
 
@@ -40,19 +45,21 @@ public:
 
     string name;
     string type1;
-    string type2;
     int dexNum;
     int level;
+    double xp;
+    int atk;
+    int def;
+    int init;
     double health;
     double AP;
-    double size;
-    double weighth;
     int maxLevel;
     attack attack1;
     attack attack2;
 
+
     //Konstruktor
-    Pokemon(string name, string type1, string type2, int dexNum, int level, double health, double AP, double size, double weighth, int maxLevel, attack attack1, attack attack2){};
+    Pokemon(string name, string type1, int dexNum, int level, double xp, int atk, int def, int init, double health, double AP, int maxLevel, attack attack1, attack attack2){};
 
 private:
 
@@ -70,7 +77,7 @@ int main()
 	tackle.APcost = 35;
 
 	attack growl;
-	tackle.name = "growl";
+	growl.name = "growl";
 	tackle.typ = "normal";
 	tackle.strength = 45;
 	tackle.precision = 100;
@@ -81,7 +88,7 @@ int main()
 
 
 	// Erstelle die Pokemons
-	Pokemon bisasam("Bisasam", "grass", "poison",001, 1, 100, 100, 0.7, 6.9, 10, tackle, growl);
+	Pokemon bisasam("Bisasam", "grass",001, 1, 0, 10, 10, 10, 100, 100, 10, tackle, growl);
 
 	bisasam.attack1 = tackle;
 	bisasam.attack2 = growl;
@@ -100,5 +107,7 @@ int main()
 
     return 0;
 }
+
+
 
 
