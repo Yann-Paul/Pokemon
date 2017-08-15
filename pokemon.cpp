@@ -8,6 +8,7 @@ using namespace std;
 string name;  // Spielernamen
 char input; // Eingabe im späteren Input
 int auswahl;
+bool schleife = true; //Fuer Schleife
 
 // vector declaration fürs Inventory
 int vv[2] = { 5,5 };
@@ -172,17 +173,20 @@ int main()
     cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"<<endl;
     cin >> input;
 
-	while (false) {
+	while (schleife) {
 		switch (input) {
 		case '1':
 			auswahl = 1;
-			return true;
+			schleife = false;
+			break;
 		case '2':
 			auswahl = 2;
-			return true;
+			schleife = false;
+			break;
 		case '3':
 			auswahl = 3;
-			return true;
+			schleife = false;
+			break;
 		default:
 			cout << "Bitte gib nur eine der unten stehenden Zahlen an" << endl;
 			cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"
@@ -192,8 +196,9 @@ int main()
 		}
 	}
 
-    cout << "Herzlichen Glückwunsch. Du hast "<< pokedex[auswahl-1].name <<" ausgewählt. Das ist eine gute Wahl"<<endl;
-    spieler.pokemon1 = pokedex[auswahl-1];
+	Pokemon auswahlPokemon = pokedex[(auswahl-1)];
+    cout << "Herzlichen Glückwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewählt. Das ist eine gute Wahl"<<endl;
+    spieler.pokemon1 = auswahlPokemon;
 
     return 0;
 }
