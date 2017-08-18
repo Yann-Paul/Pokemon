@@ -48,7 +48,8 @@ int attackalgorithm(Pokemon pokpact, Pokemon pokeact){//entscheide, welche Attac
 }
 
 
-bool combatroutine(Spieler spieler, Spieler enemy){
+int combatroutine(Spieler spieler, Spieler enemy){
+	bool flightparameter=false;
 	int pact;
 	int eact=1;
 	char choice;//wähle Diener
@@ -75,10 +76,14 @@ bool combatroutine(Spieler spieler, Spieler enemy){
 			int enaction=1;
 			char whichaction;
 			cin >> whichaction;//frage Spieleraktion ab
-			if(whichaction='ph'){
+			if(whichaction='f'){
+				flightparameter=true;
+				break;
+			}
+			if(whichaction='h'){
 				spieler.usepotion(0, pokpact);
 			}
-			if(whichaction='pm'){
+			if(whichaction='m'){
 				spieler.usepotion(1, pokpact);
 			}
 			if(pokeact.health<30 & enemy.inventory[0]>0){//Gegner nutzt Tränke, falls nötig, und verbraucht dabei seine Aktion
@@ -90,12 +95,44 @@ bool combatroutine(Spieler spieler, Spieler enemy){
 				enaction=0;
 			}
 			else{
+				pair<double,string> ang;
+				double xptemp;
 				if(pokeact.init>pokpact.init){
 					if(enaction=1){
 						int attackswitch=attackalgorithm(pokpact,pokeact);
 						switch(attackswitch){
-						case 0
+						case 0: break;
+						case 1: ang=pokeact.angriff(pokeact.attack1); break;
+						case 2: ang=pokeact.angriff(pokeact.attack2); break;
 						}
+						pokpact.verteidigen(ang);
+					}
+					if(pokpact.health>0){
+						switch(whichaction){
+						case '0': break;
+						case '1': ang=pokpact.angriff(pokpact.attack1); break;
+						case '2': ang=pokpact.angriff(pokpact.attack2); break;
+						}
+						xptemp=pokeact.verteidigen(ang);
+						pokpact.gainXP(xptemp);
+					}
+				}
+				else{
+					switch(whichaction){
+					case '0': break;
+					case '1': ang=pokpact.angriff(pokpact.attack1); break;
+					case '2': ang=pokpact.angriff(pokpact.attack2); break;
+					}
+					xptemp=pokeact.verteidigen(ang);;
+					pokpact.gainXP(xptemp);
+					if(enaction=1 & pokeact.health>0){
+						int attackswitch=attackalgorithm(pokpact,pokeact);
+						switch(attackswitch){
+						case 0: break;
+						case 1: ang=pokeact.angriff(pokeact.attack1); break;
+						case 2: ang=pokeact.angriff(pokeact.attack2); break;
+						}
+						pokpact.verteidigen(ang);
 					}
 				}
 			}
@@ -110,6 +147,9 @@ bool combatroutine(Spieler spieler, Spieler enemy){
 		case 2: enemy.pokemon2=pokeact; break;
 		case 3: enemy.pokemon3=pokeact; break;
 		}
+		if(flightparameter==true){
+			break;
+		}
 		if(pokpact.health>0){//nächster Diener wird eingesetzt
 			eact+=1;
 		}
@@ -122,10 +162,13 @@ bool combatroutine(Spieler spieler, Spieler enemy){
 			}
 		}
 	}while((enemy.pokemon1.health+enemy.pokemon2.health+enemy.pokemon3.health>0) & (spieler.pokemon1.health+spieler.pokemon2.health+spieler.pokemon3.health>0));//bis alle Kämpfer besiegt
+	if(flightparameter==true){
+		return 0;//Flucht ist keine Niederlage!
+	}
 	if(spieler.pokemon1.health+spieler.pokemon2.health+spieler.pokemon3.health>0){//falls Spielerdiener leben
 		return 1;//Sieg des Spielers
 	}
 	else{
-		return 0;//Sieg des Gegners
+		return -1;//Sieg des Gegners
 	}
 }
