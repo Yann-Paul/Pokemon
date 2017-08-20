@@ -4,17 +4,16 @@
 #include <tuple>
 #include <stdlib.h>
 #include <time.h>
-#include "Funktionen.cpp"
+#include "Funktionen.hpp"
 
 
 using namespace std;
 
 
 string name;  // Spielernamen
-char input; // Eingabe im späteren Input
+char input; // Eingabe im spÃ¤teren Input
 int auswahl;
 bool schleife = true; //Fuer Schleife
-
 
 
 
@@ -46,11 +45,11 @@ int main()
 
 
     //Pokemon auswaehlen
-    cout << "Hallo! Um das Spiel beginnen zu können brauchst du einen Namen. Bitte wähle deinen Namen aus. " <<endl; // Test
+    cout << "Hallo! Um das Spiel beginnen zu kÃ¶nnen brauchst du einen Namen. Bitte wÃ¤hle deinen Namen aus. " <<endl; // Test
     cin >> name;
     Spieler spieler(name, none, none, none);
-    cout << "Hallo " << name <<"! Herzlich Willkommen in der Pokemonarena. Als nächstes wähle bitte dein Pokemon aus."<<endl;
-    cout << "Dafür drücke eine der folgenden Zahlen."<<endl;
+    cout << "Hallo " << name <<"! Herzlich Willkommen in der Pokemonarena. Als nÃ¤chstes wÃ¤hle bitte dein Pokemon aus."<<endl;
+    cout << "DafÃ¼r drÃ¼cke eine der folgenden Zahlen."<<endl;
     cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"<<endl;
     cin >> input;
 
@@ -77,9 +76,21 @@ int main()
 		}
 	}
 
+
 	Pokemon auswahlPokemon = pokedex[(auswahl-1)];
-    cout << "Herzlichen Glückwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewählt. Das ist eine gute Wahl"<<endl;
+	cout << "Herzlichen Glückwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewählt. Das ist eine gute Wahl"<<endl;
     spieler.pokemon1 = auswahlPokemon;
+    spieler.pokemon2 = auswahlPokemon;
+    spieler.pokemon3 = auswahlPokemon;
+    Spieler Gegner("Gary", auswahlPokemon, auswahlPokemon, auswahlPokemon);
+    int winloss = combatroutine(spieler, Gegner);
+    if(winloss==-1){
+    	cout << "loser" << endl;
+    }
+    if(winloss==1){
+    	cout << "triumph" << endl;
+    }
+
 
     return 0;
 }
