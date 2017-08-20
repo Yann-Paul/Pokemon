@@ -1,7 +1,13 @@
 #include <iostream>
 #include <string>
-#include "Attack.cpp"
+#include "Attack.hpp"
 using namespace std;
+
+
+int checktype(string type1, string type2){//liste mit typschwÃ¤chen, wenn typen final
+	return 1;//momentan alles sehr effektiv
+}
+
 
 class Pokemon
 {
@@ -83,6 +89,7 @@ public:
 		}
 		pair<double,string> tempdmg (dmg,attk.type);
 		mana-=attk.manacost;
+		cout << "Mana: " << mana << endl;
 		return tempdmg;//übergibt pair aus Schadenswert und Typ
 	};
 
@@ -98,6 +105,7 @@ public:
 		if(health<0){
 			health=0;
 		}
+		cout << "Health: " << health << endl;
 		return dmg;//gibt Schaden aus für xp-Berechnung
 	};
 
