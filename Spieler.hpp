@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Pokemon.cpp"
+#include "Pokemon.hpp"
 using namespace std;
 
-// vector declaration fürs Inventory
+// vector declaration fÃ¼rs Inventory
 int vv[2] = { 5,5 };
 std::vector<int> v(&vv[0], &vv[0]+2);
 
@@ -12,7 +12,7 @@ class Spieler
 {
 public:
 	string name;
-	vector<int> inventory; // = {5,5}; // Erste Zahl = anzahl Manatränke, Zweite Zahl = anzahl Healthtränke;
+	vector<int> inventory; // = {5,5}; // Erste Zahl = anzahl ManatrÃ¤nke, Zweite Zahl = anzahl HealthtrÃ¤nke;
 	Pokemon pokemon1;
 	Pokemon pokemon2;
 	Pokemon pokemon3;
@@ -34,5 +34,5 @@ public:
 			inventory[1] --;
 		}
 	}
-	// zur Einfachheit gibt es erst mal nur eine Sorte an Tränken die health oder mana direkt auf 100 setzt
+	// zur Einfachheit gibt es erst mal nur eine Sorte an TrÃ¤nken die health oder mana direkt auf 100 setzt
 };
