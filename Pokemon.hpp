@@ -5,8 +5,79 @@
 using namespace std;
 
 
-int checktype(string type1, string type2){//liste mit typschwÃƒÂ¤chen, wenn typen final
-	return 1;//momentan alles sehr effektiv
+int checktype(string type1, string type2){//liste mit typschwaechen, wenn typen final
+	int typ1;
+	int typ2;
+	if(type1=="grass"){
+		typ1=0;
+	}
+	if(type1=="water"){
+		typ1=1;
+	}
+	if(type1=="fire"){
+		typ1=2;
+	}
+	if(type1=="electro"){
+		typ1=3;
+	}
+	if(type1=="stone"){
+		typ1=4;
+	}
+	if(type1=="wind"){
+		typ1=5;
+	}
+	if(type2=="grass"){
+			typ2=0;
+	}
+	if(type2=="water"){
+			typ2=1;
+	}
+	if(type2=="fire"){
+			typ2=2;
+	}
+	if(type2=="electro"){
+			typ2=3;
+	}
+	if(type2=="stone"){
+			typ2=4;
+	}
+	if(type2=="wind"){
+			typ2=5;
+	}
+	switch(typ1){
+	case 0: switch(typ2){
+	case 1: return 1;
+	case 2: return -1;
+	case 4: return 1;
+	case 5: return -1;
+	}
+	case 1: switch(typ2){
+	case 0: return -1;
+	case 2: return 1;
+	case 4: return 1;
+	}
+	case 2: switch(typ2){
+	case 0: return 1;
+	case 1: return -1;
+	case 2: return -1;
+	case 4: return -1;
+	}
+	case 3: switch(typ2){
+	case 1: return 1;
+	case 4: return -1;
+	case 5: return 1;
+	}
+	case 4: switch(typ2){
+	case 2: return 1;
+	case 3: return 1;
+	case 5: return -1;
+	}
+	case 5: switch(typ2){
+	case 0: return 1;
+	case 4: return -1;
+	}
+	}
+	return 0;//momentan alles sehr effektiv
 }
 
 
@@ -19,7 +90,7 @@ public:
 	}
 
 	string name;
-    string type; //types: grass, water, fire, electro, stone, wind, phsycho
+    string type; //types: grass, water, fire, electro, stone, wind, psycho
     int dexNum;
     double atkbase;
     double defbase;
