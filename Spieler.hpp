@@ -4,7 +4,7 @@
 #include "Pokemon.hpp"
 using namespace std;
 
-// vector declaration fÃ¼rs Inventory
+// vector declaration fÃƒÂ¼rs Inventory
 int vv[2] = { 5,5 };
 std::vector<int> v(&vv[0], &vv[0]+2);
 
@@ -12,11 +12,11 @@ class Spieler
 {
 public:
 	string name;
-	vector<int> inventory; // = {5,5}; // Erste Zahl = anzahl ManatrÃ¤nke, Zweite Zahl = anzahl HealthtrÃ¤nke;
-	Pokemon pokemon1;
-	Pokemon pokemon2;
-	Pokemon pokemon3;
-	Spieler(string name, Pokemon pokemon1, Pokemon pokemon2, Pokemon pokemon3){
+	vector<int> inventory; // = {5,5}; // Erste Zahl = anzahl ManatrÃƒÂ¤nke, Zweite Zahl = anzahl HealthtrÃƒÂ¤nke;
+	individual pokemon1;
+	individual pokemon2;
+	individual pokemon3;
+	Spieler(string name, individual pokemon1, individual pokemon2, individual pokemon3){
 		this-> name = name;
 		this-> inventory = v;
 		this-> pokemon1 = pokemon1;
@@ -24,7 +24,7 @@ public:
 		this-> pokemon3 = pokemon3;
 	};
 
-	void usepotion(bool mahe, Pokemon pokemon){ // mahe = 1 -> mana; mahe = 0 -> health
+	void usepotion(bool mahe, individual pokemon){ // mahe = 1 -> mana; mahe = 0 -> health
 		if (mahe){
 			pokemon.mana = 100;
 			inventory[0] --;
@@ -34,5 +34,5 @@ public:
 			inventory[1] --;
 		}
 	}
-	// zur Einfachheit gibt es erst mal nur eine Sorte an TrÃ¤nken die health oder mana direkt auf 100 setzt
+	// zur Einfachheit gibt es erst mal nur eine Sorte an TrÃƒÂ¤nken die health oder mana direkt auf 100 setzt
 };
