@@ -11,7 +11,7 @@ using namespace std;
 
 
 string name;  // Spielernamen
-char input; // Eingabe im spÃ¤teren Input
+char input; // Eingabe im spÃƒÂ¤teren Input
 int auswahl;
 bool schleife = true; //Fuer Schleife
 
@@ -28,11 +28,13 @@ int main()
 	Attack razorLeaf("Razor Leaf", "psycho", 55, 100, 25);
 
 	// Erstelle die Pokemons
-	Pokemon none("None", "None", 0, 0, 0, 0, 0.0, 0.0, 0, 0, 0, 0, 0, 0.0, tackle, tackle);
-	Pokemon bisasam("Bisasam", "grass", 001, 1, 100, 100, 0.7, 6.9, 5, 5, 5, 10, 002, 0.0, tackle, growl);
-	Pokemon bisaknosp("Bisaknosp", "grass", 002, 11, 100, 100, 1.0, 13.0, 15, 15, 15, 20, 003, 0.0, solarBeam, vineWhip);
-	Pokemon bisaflor("Bisaflor", "grass", 003, 21, 100, 100, 2.0, 100.0, 30, 30, 30, 30, 003, 0.0, solarBeam, razorLeaf);
+	Pokemon none("None", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, tackle, tackle);
+	Pokemon bisasam("Bisasam", "grass", 1, 5, 5, 5, 0.5, 0.5, 0.5, 10, 2, tackle, growl);
+	Pokemon bisaknosp("Bisaknosp", "grass", 2, 15, 15, 15, 0.75, 0.75, 0.75, 20, 3, tackle, razorLeaf);
+	Pokemon bisaflor("Bisaflor", "grass", 3, 30, 30, 30, 0, 0, 0, 31, 3, vineWhip, solarBeam);
 
+	individual nullpok(none, 1);
+	nullpok.health=0;
 
 
 	tackle.test();
@@ -45,11 +47,11 @@ int main()
 
 
     //Pokemon auswaehlen
-    cout << "Hallo! Um das Spiel beginnen zu kÃ¶nnen brauchst du einen Namen. Bitte wÃ¤hle deinen Namen aus. " <<endl; // Test
+    cout << "Hallo! Um das Spiel beginnen zu koennen brauchst du einen Namen. Bitte waehle deinen Namen aus. " <<endl; // Test
     cin >> name;
-    Spieler spieler(name, none, none, none);
-    cout << "Hallo " << name <<"! Herzlich Willkommen in der Pokemonarena. Als nÃ¤chstes wÃ¤hle bitte dein Pokemon aus."<<endl;
-    cout << "DafÃ¼r drÃ¼cke eine der folgenden Zahlen."<<endl;
+    Spieler spieler(name, nullpok, nullpok, nullpok);
+    cout << "Hallo " << name <<"! Herzlich Willkommen in der Pokemonarena. Als naechstes waehle bitte dein Pokemon aus."<<endl;
+    cout << "Dafuer duecke eine der folgenden Zahlen."<<endl;
     cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"<<endl;
     cin >> input;
 
@@ -78,11 +80,10 @@ int main()
 
 
 	Pokemon auswahlPokemon = pokedex[(auswahl-1)];
-	cout << "Herzlichen Glückwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewählt. Das ist eine gute Wahl"<<endl;
-    spieler.pokemon1 = auswahlPokemon;
-    spieler.pokemon2 = auswahlPokemon;
-    spieler.pokemon3 = auswahlPokemon;
-    Spieler Gegner("Gary", auswahlPokemon, auswahlPokemon, auswahlPokemon);
+	individual ausPok(auswahlPokemon, 1);
+	cout << "Herzlichen Glueckwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewaehlt. Das ist eine gute Wahl"<<endl;
+    spieler.pokemon1 = ausPok;
+    Spieler Gegner("Gary", ausPok, nullpok, nullpok);
     int winloss = combatroutine(spieler, Gegner);
     if(winloss==-1){
     	cout << "loser" << endl;
