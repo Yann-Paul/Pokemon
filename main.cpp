@@ -1,99 +1,366 @@
-#include <iostream>
+//Using SDL and standard IO
+#include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
+#include <stdio.h>
 #include <string>
-#include <vector>
-#include <tuple>
-#include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
-#include "Funktionen.hpp"
-
-
+#include <string>
+#include <tuple>
 using namespace std;
 
+//Bildschirmgroeße
+const int SCREEN_WIDTH = 320;
+const int SCREEN_HEIGHT = 320;
 
-string name;  // Spielernamen
-char input; // Eingabe im spÃƒÂ¤teren Input
-int auswahl;
-bool schleife = true; //Fuer Schleife
+//initialisiert das Fenster
+bool init();
 
+//Laedt die Bilder
+bool loadMedia();
 
+//Schließt SDL. Muss noch geändert werden
+void close();
 
-int main()
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
+
+//The surface contained by the window
+SDL_Surface* gScreenSurface = NULL;
+
+//The image we will load and show on the screen
+SDL_Surface* gbackgroundMap = NULL;
+SDL_Surface* gcharacterLeft = NULL;
+SDL_Surface* gcharacterRight = NULL;
+SDL_Surface* gcharacterBack = NULL;
+SDL_Surface* gcharacterFront = NULL;
+
+SDL_Rect dest;
+
+pair<bool,int> grenzenPokemon;
+
+//gibt den Typus des gefundenen Pokemons an:
+// 1 = fire, 2 = stone, 3 = wind, 4 = psycho,  5 = electro, 6 = grass
+int typeInt;
+
+bool init()
 {
-
-	// Attacken (name, typ, strength, precision, manacost)
-	Attack tackle("Tackle", "normal", 40, 100, 20);
-	Attack growl("Growl", "normal", 45, 100, 20);
-	Attack solarBeam("Solar Beam", "grass", 45, 100, 25);
-	Attack vineWhip("Vine Whip", "grass", 45, 100, 10);
-	Attack razorLeaf("Razor Leaf", "psycho", 55, 100, 25);
-
-	// Erstelle die Pokemons
-	Pokemon none("None", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, tackle, tackle);
-	Pokemon bisasam("Bisasam", "grass", 1, 5, 5, 5, 0.5, 0.5, 0.5, 10, 2, tackle, growl);
-	Pokemon bisaknosp("Bisaknosp", "grass", 2, 15, 15, 15, 0.75, 0.75, 0.75, 20, 3, tackle, razorLeaf);
-	Pokemon bisaflor("Bisaflor", "grass", 3, 30, 30, 30, 0, 0, 0, 31, 3, vineWhip, solarBeam);
-
-	individual nullpok(none, 1);
-	nullpok.health=0;
-
-
-	tackle.test();
-
-	bisasam.test();
-	bisaflor.test();
-
-	// fuer spaeter
-	Pokemon pokedex[3] = { bisasam, bisaknosp, bisaflor };
-
-
-    //Pokemon auswaehlen
-    cout << "Hallo! Um das Spiel beginnen zu koennen brauchst du einen Namen. Bitte waehle deinen Namen aus. " <<endl; // Test
-    cin >> name;
-    Spieler spieler(name, nullpok, nullpok, nullpok);
-    cout << "Hallo " << name <<"! Herzlich Willkommen in der Pokemonarena. Als naechstes waehle bitte dein Pokemon aus."<<endl;
-    cout << "Dafuer duecke eine der folgenden Zahlen."<<endl;
-    cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"<<endl;
-    cin >> input;
-
-	while (schleife) {
-		switch (input) {
-		case '1':
-			auswahl = 1;
-			schleife = false;
-			break;
-		case '2':
-			auswahl = 2;
-			schleife = false;
-			break;
-		case '3':
-			auswahl = 3;
-			schleife = false;
-			break;
-		default:
-			cout << "Bitte gib nur eine der unten stehenden Zahlen an" << endl;
-			cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"
-					<< endl;
-			cin >> input;
-			break;
-		}
-	}
-
-
-	Pokemon auswahlPokemon = pokedex[(auswahl-1)];
-	individual ausPok(auswahlPokemon, 1);
-	cout << "Herzlichen Glueckwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewaehlt. Das ist eine gute Wahl"<<endl;
-    spieler.pokemon1 = ausPok;
-    Spieler Gegner("Gary", ausPok, nullpok, nullpok);
-    int winloss = combatroutine(spieler, Gegner);
-    if(winloss==-1){
-    	cout << "loser" << endl;
+    //Initialization flag
+    bool success = true;
+    
+    //Initialize SDL
+        SDL_Init(SDL_INIT_EVERYTHING);
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+    {
+        printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+        success = false;
     }
-    if(winloss==1){
-    	cout << "triumph" << endl;
+    else
+    {
+        //Create window
+        gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+        if( gWindow == NULL )
+        {
+            printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+            success = false;
+        }
+        else
+        {
+            //Get window surface
+            gScreenSurface = SDL_GetWindowSurface( gWindow );
+        }
     }
-
-
-    return 0;
+    
+    return success;
 }
 
+bool loadMedia()
+{
+    //Loading success flag
+    bool success = true;
+    
+    //Hintergrundkart laden
+    gbackgroundMap = IMG_Load ( "PokemonMap.png" );
+    if( gbackgroundMap == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "02_getting_an_image_on_the_screen/PokemonMap.jpg", SDL_GetError() );
+        success = false;
+    }
+    
+    //Charakter laden
+    gcharacterLeft = IMG_Load ("characterLeft.png");
+    if( gcharacterLeft == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "character", SDL_GetError() );
+        success = false;
+    }
+    
+    //Charakter laden
+    gcharacterRight = IMG_Load ("characterRight.png");
+    if( gcharacterRight == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "character", SDL_GetError() );
+        success = false;
+    }
+    
+    //Charakter laden
+    gcharacterFront = IMG_Load ("characterFront.png");
+    if( gcharacterFront == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "character", SDL_GetError() );
+        success = false;
+    }
+    
+    //Charakter laden
+    gcharacterBack = IMG_Load ("characterBack.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "character", SDL_GetError() );
+        success = false;
+    }
+    
+    return success;
+}
 
+void close()
+{
+    //Deallocate surface
+    SDL_FreeSurface( gbackgroundMap );
+    gbackgroundMap = NULL;
+    SDL_FreeSurface( gcharacterFront );
+    gcharacterFront = NULL;
+    
+    //Destroy window
+    SDL_DestroyWindow( gWindow );
+    gWindow = NULL;
+    
+    //Quit SDL subsystems
+    SDL_Quit();
+}
+
+// prüft ob dass Character nicht über Hindernisse läuft
+pair<bool,int> inGrenzen(int x,int y){
+    // innerhalb bildschirm
+    if (((x>=0) & (x<=310)) & ((y>=0) & (y<=310))) {
+        // nicht oben rechts
+        if ((x<213) || (y>20)){
+            // nicht im Wasser/Electro/Gras Bereich
+            if ((x>280) || (y<80)){
+                int entdeckt=rand() % 240+1;
+                if (entdeckt <= 7){
+                    switch (entdeckt){
+                    case 1: grenzenPokemon = make_pair(false,1); break;
+                    case 2: grenzenPokemon = make_pair(false,1); break;
+                    case 3: grenzenPokemon = make_pair(false,2); break;
+                    case 4: grenzenPokemon = make_pair(false,2); break;
+                    case 5: grenzenPokemon = make_pair(false,3); break;
+                    case 6: grenzenPokemon = make_pair(false,3); break;
+                    case 7: grenzenPokemon = make_pair(false,4); break;
+                    }
+
+                    return grenzenPokemon;
+                }
+                else{
+                    grenzenPokemon = make_pair(true,0);
+                    return grenzenPokemon;
+                }
+            }
+            else {
+                // im Strandbereich (Wasser)
+                if ((x>150) & (x<190) & (y<130)){
+                    int entdeckt=rand() % 40+1;
+                    if (entdeckt == 1){
+                        grenzenPokemon = make_pair(false,5);
+                        return grenzenPokemon;
+                        
+                    }
+                    else{
+                        grenzenPokemon = make_pair(true,0);
+                        return grenzenPokemon;
+                    }
+
+                }
+                else {
+                    // im zweituntersten rechteck (Elektrobereich)
+                    if ((x>80) & (y>210) & (y<245)){
+                        // außerhalb des Baumstumpfes
+                        if (!((x>105) & (x<125) & (y>215) & (y<240))){
+                            int entdeckt=rand() % 40+1;
+                            if (entdeckt == 1){
+                                grenzenPokemon = make_pair(false,6);
+                                return grenzenPokemon;
+                            }
+                            else{
+                                grenzenPokemon = make_pair(true,0);
+                                return grenzenPokemon;
+                            }
+
+                        }
+                        
+                    }
+                    else {
+                        // im untersten Rechteck (Grasbereich)
+                        if ((x>150) & (y>245)){
+                            int entdeckt=rand() % 40+1;
+                            if (entdeckt == 1){
+                                grenzenPokemon = make_pair(false,7);
+                                return grenzenPokemon;
+                            }
+                            else{
+                                grenzenPokemon = make_pair(true,0);
+                                return grenzenPokemon;
+                            }
+
+                        }
+                    }
+                }
+            
+            }
+            
+        }
+    }
+    grenzenPokemon = make_pair(false,0);
+    return grenzenPokemon;
+}
+
+class Character {
+public:
+    SDL_Surface *bild;
+    int xpos = 200;
+    int ypos = 10;
+    int tempo = 4;
+    SDL_Rect dest;
+    SDL_Rect src;
+    
+    Character(SDL_Surface *_bild) {
+        bild = _bild;
+    }
+    
+    void zeichnen(SDL_Surface *surf){
+        src = {.x =  200, .y =  10, .w = 13, .h = 16};
+        dest = {.x =  xpos, .y =  ypos, .w = 13, .h = 16};
+        SDL_BlitSurface(bild, NULL, surf, &dest);
+    }
+    
+    int bewegen(int richtung){
+        switch (richtung){
+            case 1:
+                grenzenPokemon = inGrenzen(xpos, ypos - tempo);
+                if (grenzenPokemon.first){
+                    ypos -= tempo;
+                    bild = gcharacterBack;
+                }
+                else{
+                    if ( grenzenPokemon.second != 0){
+                        return(grenzenPokemon.second);
+                    }
+                }
+                break;
+            case 2:
+                grenzenPokemon = inGrenzen(xpos + tempo, ypos);
+                if (grenzenPokemon.first){
+                    xpos += tempo;
+                    bild = gcharacterRight;
+                }
+                else{
+                    if ( grenzenPokemon.second != 0){
+                        return(grenzenPokemon.second);
+                    }
+                }
+                break;
+
+            case 3:
+                grenzenPokemon = inGrenzen(xpos, ypos + tempo);
+                if (grenzenPokemon.first){
+                    ypos += tempo;
+                    bild = gcharacterFront;
+                }
+                else{
+                    if ( grenzenPokemon.second != 0){
+                        return(grenzenPokemon.second);
+                    }
+                }
+                break;
+            case 4:
+                grenzenPokemon = inGrenzen(xpos - tempo, ypos);
+                if (grenzenPokemon.first){
+                    xpos -= tempo;
+                    bild = gcharacterLeft;
+                }
+                else{
+                    if ( grenzenPokemon.second != 0){
+                        return(grenzenPokemon.second);
+                    }
+                }
+                break;
+        }
+        return(grenzenPokemon.second);
+    }
+};
+
+int main( int argc, char* args[] )
+{
+
+    
+    //Start up SDL and create window
+    if( !init() )
+    {
+        printf( "Failed to initialize!\n" );
+    }
+    else
+    {
+        //Load media
+        if( !loadMedia() )
+        {
+            printf( "Failed to load media!\n" );
+        }
+        else
+        {
+            //Apply the image
+            SDL_BlitSurface( gbackgroundMap, NULL, gScreenSurface, NULL );
+            
+            //Update the surface
+            SDL_UpdateWindowSurface( gWindow );
+            
+            
+            SDL_Event e;
+            SDL_Surface* surf = SDL_GetWindowSurface(gWindow);
+            
+            Character character1(gcharacterFront);
+            character1.zeichnen(surf);
+            
+            for (int x=0; x<30000; x++) {
+                
+                if ( SDL_PollEvent( &e ) != 0 ) {
+                    switch (e.key.keysym.sym) {
+                        case SDLK_UP:
+                            typeInt = character1.bewegen(1);
+                            break;
+                        case SDLK_DOWN:
+                            typeInt = character1.bewegen(3);
+                            break;
+                        case SDLK_LEFT:
+                            typeInt = character1.bewegen(4);
+                            break;
+                        case SDLK_RIGHT:
+                            typeInt = character1.bewegen(2);
+                            break;
+                    }
+                    
+                }
+                SDL_BlitSurface( gbackgroundMap, NULL, gScreenSurface, NULL );
+                character1.zeichnen(surf);
+                SDL_UpdateWindowSurface(gWindow);
+                if (typeInt != 0){
+                    close();
+                    return typeInt;
+                }
+            }
+        }
+    }
+    
+    //Free resources and close SDL
+    close();
+    
+    return 0;
+}
