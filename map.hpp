@@ -298,7 +298,7 @@ public:
     }
 };
 
-int main( int argc, char* args[] )
+void map()
 {
 
     
