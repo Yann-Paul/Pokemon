@@ -298,7 +298,7 @@ public:
     }
 };
 
-void map()
+int map()
 {
 
     
