@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Funktionen.hpp"
+#include "map.hpp"
 
 
 using namespace std;
@@ -91,6 +92,8 @@ int main()
     if(winloss==1){
     	cout << "triumph" << endl;
     }
+
+    map();
 
 
     return 0;
