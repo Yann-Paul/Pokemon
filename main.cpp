@@ -93,7 +93,7 @@ int main()
     	cout << "triumph" << endl;
     }
 
-    map();
+    int gefundenesPokemontype = map();
 
 
     return 0;
