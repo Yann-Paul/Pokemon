@@ -1,11 +1,9 @@
 //Using SDL and standard IO
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
-#include <stdio.h>
 #include <string>
 #include <stdio.h>
 #include <time.h>
-#include <string>
 #include <tuple>
 using namespace std;
 
