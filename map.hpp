@@ -14,7 +14,7 @@ const int SCREEN_WIDTH = 320;
 const int SCREEN_HEIGHT = 320;
 
 //initialisiert das Fenster
-bool init();
+bool initialize();
 
 //Laedt die Bilder
 bool loadMedia();
@@ -43,7 +43,7 @@ pair<bool,int> grenzenPokemon;
 // 1 = fire, 2 = stone, 3 = wind, 4 = psycho,  5 = electro, 6 = grass
 int typeInt;
 
-bool init()
+bool initialize()
 {
     //Initialization flag
     bool success = true;
@@ -303,7 +303,7 @@ int map()
 
     
     //Start up SDL and create window
-    if( !init() )
+    if( !initialize() )
     {
         printf( "Failed to initialize!\n" );
     }
