@@ -1,3 +1,5 @@
+#include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -21,30 +23,15 @@ bool schleife = true; //Fuer Schleife
 int main()
 {
 
-	// Attacken (name, typ, strength, precision, manacost)
-	Attack tackle("Tackle", "normal", 40, 100, 20);
-	Attack growl("Growl", "normal", 45, 100, 20);
-	Attack solarBeam("Solar Beam", "grass", 45, 100, 25);
-	Attack vineWhip("Vine Whip", "grass", 45, 100, 10);
-	Attack razorLeaf("Razor Leaf", "psycho", 55, 100, 25);
 
-	// Erstelle die Pokemons
-	Pokemon none("None", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, tackle, tackle);
-	Pokemon bisasam("Bisasam", "grass", 1, 5, 5, 5, 0.5, 0.5, 0.5, 10, 2, tackle, growl);
-	Pokemon bisaknosp("Bisaknosp", "grass", 2, 15, 15, 15, 0.75, 0.75, 0.75, 20, 3, tackle, razorLeaf);
-	Pokemon bisaflor("Bisaflor", "grass", 3, 30, 30, 30, 0, 0, 0, 31, 3, vineWhip, solarBeam);
-
-	individual nullpok(none, 1);
+                    
+                     
+	Individual nullpok(none, 1);
 	nullpok.health=0;
 
 
-	tackle.test();
 
-	bisasam.test();
-	bisaflor.test();
 
-	// fuer spaeter
-	Pokemon pokedex[3] = { bisasam, bisaknosp, bisaflor };
 
 
     //Pokemon auswaehlen
@@ -72,7 +59,7 @@ int main()
 			break;
 		default:
 			cout << "Bitte gib nur eine der unten stehenden Zahlen an" << endl;
-			cout << "1 = Bisasam        2 = Bisaknosp        3 = Bisaflor"
+			cout << "1 = Bisasom        2 = Bisaknosp        3 = Bisaflor"
 					<< endl;
 			cin >> input;
 			break;
@@ -80,8 +67,8 @@ int main()
 	}
 
 
-	Pokemon auswahlPokemon = pokedex[(auswahl-1)];
-	individual ausPok(auswahlPokemon, 1);
+	Pokemon auswahlPokemon = bulbasure;
+	Individual ausPok(auswahlPokemon, 1);
 	cout << "Herzlichen Glueckwunsch. Du hast "<< auswahlPokemon.name <<auswahl<<" ausgewaehlt. Das ist eine gute Wahl"<<endl;
     spieler.pokemon1 = ausPok;
     Spieler Gegner("Gary", ausPok, nullpok, nullpok);
@@ -93,6 +80,7 @@ int main()
     	cout << "triumph" << endl;
     }
 
+    // gefundenesPokemontype
     int gefundenesPokemontype = map();
 
 

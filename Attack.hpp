@@ -7,9 +7,7 @@ class Attack
 {
 public:
 
-	void test(){
-	     cout << "Attacke wurde erstellt"<<  endl;  // Test
-	}
+
 
 	string name;
 	string type; //types: grass, water, fire, electro, stone, wind, psycho

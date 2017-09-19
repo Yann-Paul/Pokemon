@@ -1,9 +1,11 @@
 //Using SDL and standard IO
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
+#include <stdio.h>
 #include <string>
 #include <stdio.h>
 #include <time.h>
+#include <string>
 #include <tuple>
 using namespace std;
 
@@ -32,6 +34,13 @@ SDL_Surface* gcharacterLeft = NULL;
 SDL_Surface* gcharacterRight = NULL;
 SDL_Surface* gcharacterBack = NULL;
 SDL_Surface* gcharacterFront = NULL;
+SDL_Surface* gwind = NULL;
+SDL_Surface* gfire = NULL;
+SDL_Surface* gstone = NULL;
+SDL_Surface* gelectro = NULL;
+SDL_Surface* gwater = NULL;
+SDL_Surface* ggrass = NULL;
+SDL_Surface* gphsycho = NULL;
 
 SDL_Rect dest;
 
@@ -85,7 +94,7 @@ bool loadMedia()
         success = false;
     }
     
-    //Charakter laden
+    //Charakterposen laden
     gcharacterLeft = IMG_Load ("characterLeft.png");
     if( gcharacterLeft == NULL )
     {
@@ -93,7 +102,6 @@ bool loadMedia()
         success = false;
     }
     
-    //Charakter laden
     gcharacterRight = IMG_Load ("characterRight.png");
     if( gcharacterRight == NULL )
     {
@@ -101,7 +109,6 @@ bool loadMedia()
         success = false;
     }
     
-    //Charakter laden
     gcharacterFront = IMG_Load ("characterFront.png");
     if( gcharacterFront == NULL )
     {
@@ -109,13 +116,51 @@ bool loadMedia()
         success = false;
     }
     
-    //Charakter laden
     gcharacterBack = IMG_Load ("characterBack.png");
     if( gcharacterBack == NULL )
     {
         printf( "Unable to load image %s! SDL Error: %s\n", "character", SDL_GetError() );
         success = false;
     }
+    
+    //Elemente laden
+    gwind = IMG_Load ("wind.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "element", SDL_GetError() );
+        success = false;
+    }
+    gelectro = IMG_Load ("electro.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "element", SDL_GetError() );
+        success = false;
+    }
+    gfire = IMG_Load ("fire.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "element", SDL_GetError() );
+        success = false;
+    }
+    gphsycho = IMG_Load ("phsycho.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "element", SDL_GetError() );
+        success = false;
+    }
+    gstone = IMG_Load ("stone.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "element", SDL_GetError() );
+        success = false;
+    }
+    gwater = IMG_Load ("water.png");
+    if( gcharacterBack == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "element", SDL_GetError() );
+        success = false;
+    }
+
     
     return success;
 }
@@ -344,12 +389,28 @@ int map()
                             typeInt = character1.bewegen(2);
                             break;
                     }
-                    
                 }
+                
                 SDL_BlitSurface( gbackgroundMap, NULL, gScreenSurface, NULL );
                 character1.zeichnen(surf);
                 SDL_UpdateWindowSurface(gWindow);
+                
                 if (typeInt != 0){
+                    
+                    // Element anzeigen
+                    switch(typeInt){
+                        case 1: SDL_BlitSurface( gfire, NULL, gScreenSurface, NULL ); break;
+                        case 2: SDL_BlitSurface( gstone, NULL, gScreenSurface, NULL ); break;
+                        case 3: SDL_BlitSurface( gwind, NULL, gScreenSurface, NULL ); break;
+                        case 4: SDL_BlitSurface( gphsycho, NULL, gScreenSurface, NULL ); break;
+                        case 5: SDL_BlitSurface( gelectro, NULL, gScreenSurface, NULL ); break;
+                        case 6: SDL_BlitSurface( ggrass, NULL, gScreenSurface, NULL ); break;
+                    }
+                    
+                    SDL_UpdateWindowSurface( gWindow );
+                    SDL_Delay(1500);
+                    
+                    
                     close();
                     return typeInt;
                 }

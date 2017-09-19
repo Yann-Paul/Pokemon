@@ -8,7 +8,7 @@
 
 
 
-int attackalgorithm(individual pokpact, individual pokeact){//entscheide, welche Attacke Gegner verwendet
+int attackalgorithm(Individual pokpact, Individual pokeact){//entscheide, welche Attacke Gegner verwendet
 	if(pokeact.mana<pokeact.attack1.manacost){//teste, ob zureichend Mana fÃƒÂ¼r Angriff
 		if(pokeact.mana<pokeact.attack2.manacost){
 			return 0;//falls Mana unzureichend fÃƒÂ¼r beide, nutze Verzweifler
@@ -59,8 +59,8 @@ int combatroutine(Spieler spieler, Spieler enemy){
 	}
 	cout << "gewaehlt" << endl;
 	do{//Matchroutine (3vs3) bis alle Diener eines Kontrahenten besiegt sind
-		individual pokpact;
-		individual pokeact;
+		Individual pokpact;
+		Individual pokeact;
 		switch(pact){//temporÃƒÂ¤re Diener im Zwischenspeicher
 		case 1: pokpact=spieler.pokemon1; break;
 		case 2: pokpact=spieler.pokemon2; break;

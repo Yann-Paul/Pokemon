@@ -13,10 +13,10 @@ class Spieler
 public:
 	string name;
 	vector<int> inventory; // = {5,5}; // Erste Zahl = anzahl ManatrÃƒÂ¤nke, Zweite Zahl = anzahl HealthtrÃƒÂ¤nke;
-	individual pokemon1;
-	individual pokemon2;
-	individual pokemon3;
-	Spieler(string name, individual pokemon1, individual pokemon2, individual pokemon3){
+	Individual pokemon1;
+	Individual pokemon2;
+	Individual pokemon3;
+	Spieler(string name, Individual pokemon1, Individual pokemon2, Individual pokemon3){
 		this-> name = name;
 		this-> inventory = v;
 		this-> pokemon1 = pokemon1;
@@ -24,7 +24,7 @@ public:
 		this-> pokemon3 = pokemon3;
 	};
 
-	void usepotion(bool mahe, individual pokemon){ // mahe = 1 -> mana; mahe = 0 -> health
+	void usepotion(bool mahe, Individual pokemon){ // mahe = 1 -> mana; mahe = 0 -> health
 		if (mahe){
 			pokemon.mana = 100;
 			inventory[0] --;
